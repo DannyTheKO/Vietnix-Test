@@ -1,5 +1,6 @@
 # Executive Summary
 
+Từ 01:33:05 ngày 20/10/2026, hàng loạt website trên node shared hosting `web-hcm-07` (~40 site, Nginx + PHP-FPM 8.1 + MySQL 8) bắt đầu trả lỗi 502/504 và kéo dài liên tục cho tới khi kỹ sư on-call SSH vào lúc 02:21 và can thiệp lúc 02:23. Trong khung 01:33–02:25, load balancer ghi nhận 3.151 request thì có 2.775 request lỗi (88,1%) trên cả 5 vhost xuất hiện trong log; các request tĩnh vẫn trả 200 nên chỉ phần động (PHP/MySQL) bị ảnh hưởng, không có dấu hiệu mất dữ liệu của khách. Nguyên nhân gốc là lỗi chính tả `dailly` thay vì `daily` trong `/etc/logrotate.d/nginx` (sửa lúc 17:42 ngày 13/10), khiến logrotate bỏ qua toàn bộ block nginx từ 00:00 ngày 14/10 nên `access.log` không được rotate và phình lên 37 GB. Đĩa `/` (118 GB) cạn sạch lúc 01:32:57 khi cron backup 01:00 tar `/home` trong lúc bản backup của ngày hôm trước (19 GB) vẫn còn, do script chỉ xoá bản cũ sau khi tar thành công. Hết chỗ ghi khiến MySQL không ghi được binlog và treo mọi commit, 50 worker PHP-FPM kẹt chờ DB, nginx không kết nối được socket (502) hoặc chờ quá `fastcgi_read_timeout` 60 giây (504) — không phải do CPU/RAM (load 1,84; CPU 94,9% idle) hay bot crawl (chỉ xuất hiện từ 01:41, sau lỗi đầu tiên 8 phút).
 
 # Timeline sự cố
 ## Ngày 14/10/2026 - 20/10/2026 (syslog)
