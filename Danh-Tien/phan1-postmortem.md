@@ -98,3 +98,41 @@ Oct 20 01:32:58 web-hcm-07 backup-sites: ERROR backup failed exit=2, keep old ba
 ```
 
 # Các giả thuyết đã loại trừ
+- Đầy dung lượng là do khu chứa backup sites do cron task làm việc hàng ngày. Sau khi kiểm tra log file `du-var.txt` thì cron task của backup hoạt động bình thường theo kế hoạch xoá file backup sau 1 ngày
+```bash
+#!/bin/bash
+# /usr/local/bin/backup-sites.sh  (cron 01:00 hằng ngày)
+set -o pipefail
+DEST=/var/backups
+TODAY=$(date +%Y%m%d)
+OLD=$(date -d '1 day ago' +%Y%m%d)
+logger -t backup-sites "start backup /home -> $DEST/sites-$TODAY.tar.gz"
+if tar -czf "$DEST/sites-$TODAY.tar.gz" /home 2>&1 | logger -t backup-sites; then
+    SIZE=$(du -h "$DEST/sites-$TODAY.tar.gz" | cut -f1)
+    logger -t backup-sites "backup done size=$SIZE"
+    rm -f "$DEST/sites-$OLD.tar.gz" && logger -t backup-sites "removed old backup sites-$OLD.tar.gz"
+else
+    logger -t backup-sites "ERROR backup failed exit=$?, keep old backups"
+fi
+```
+
+- CPU/RAM quá tải nhưng sau khi kiểm tra thì uptime máy vẫn chạy bình thường
+```console
+# root@web-hcm-07:~# uptime
+ 02:23:52 up 41 days,  6:12,  1 user,  load average: 1.84, 2.10, 1.97
+
+# root@web-hcm-07:~# top -b -n1 | head -15
+top - 02:23:53 up 41 days,  6:12,  1 user,  load average: 1.84, 2.10, 1.97
+Tasks: 312 total,   1 running, 311 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  3.1 us,  1.2 sy,  0.0 ni, 94.9 id,  0.6 wa,  0.0 hi,  0.2 si,  0.0 st
+MiB Mem :  31994.0 total,    611.2 free,   9182.4 used,  22201.1 buff/cache
+MiB Swap:   2048.0 total,   2035.4 free,     12.6 used.  22053.0 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   1187 mysql     20   0 6912340   3.9g  38112 S   1.3  12.4   812:44.10 mysqld
+   2104 www-data  20   0  178220  21004   9300 S   0.7   0.1  21:02.71 nginx
+  90311 www-data  20   0  412880  88120  61204 S   0.0   0.3   0:04.11 php-fpm8.1
+  90312 www-data  20   0  412880  86500  60812 S   0.0   0.3   0:03.92 php-fpm8.1
+``` 
+
+

@@ -13,8 +13,9 @@
 | Thời điểm | Thời lượng | Làm phần nào                             | Ghi chú (kẹt ở đâu, đã thử gì) |
 | --------- | ---------- | ---------------------------------------- | ------------------------------ |
 | 15:00     | 16:40      | Timeline Sự Cố                           |                                |
-| 16:40     | 15:25      | Phân tích nguyên nhân gốc & chuỗi hệ quả |                                |
-| 15:25     |            | Các giả thuyết đã loại trừ               |                                |
+| 16:40     | 17:25      | Phân tích nguyên nhân gốc & chuỗi hệ quả |                                |
+| 17:25     | 17:43      | Các giả thuyết đã loại trừ               |                                |
+| 17:43     |            | Khắc phục tức thời                       |                                |
 
 ## Giả định đã đặt ra
 
