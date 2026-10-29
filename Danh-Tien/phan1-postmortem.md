@@ -15,7 +15,7 @@ Oct 14 00:00:02 web-hcm-07 logrotate[5199]: error: found error in /var/log/nginx
 ## Ngày 14/10/2026 (Logorate)
 - Bên phần `logrotate-nginx.conf` config không hợp lệ nên phần mềm skip qua conf cài đặt.
 
-## Ngày 20/10/2026 (Load balancer)
+## Ngày 20/10/2026 (LoadBalancer)
 - Lấy log bên load balancer (phan1-su-co\lb) và tìm thời gian bắt đầu lỗi 502/504 trả về client
 - Dùng "ripgrep" để tìm string lỗi và ghi vào log 
     - `rg -w "502|504" phan1-su-co\lb\access-lb-hcm-01.log > phan1-su-co\lb\502-504-error.log`
@@ -34,4 +34,67 @@ Oct 14 00:00:02 web-hcm-07 logrotate[5199]: error: found error in /var/log/nginx
 - Từ thời gian `2026/10/20 01:33:16` trở đi client bị timeout bởi và `php8.1-fpm.sock` chạy thất bại vì không có tài nguyên máy
 
 # Phân tích nguyên nhân gốc & chuỗi hệ quả
-- 
+- Nguyên nhân ban đầu là do người dùng ghi sai config, dẫn tới không hợp lệ và ứng dụng skip config đó
+```conf
+# root@web-hcm-07:~# cat /etc/logrotate.d/nginx
+/var/log/nginx/*.log {
+	dailly # << sửa lại thành "daily"
+	missingok
+	rotate 14
+	compress
+	delaycompress
+	notifempty
+	create 0640 www-data adm
+	sharedscripts
+	postrotate
+		invoke-rc.d nginx rotate >/dev/null 2>&1
+	endscript
+}
+```
+
+- Từ nguyên nhân dẫn đến hậu quả tới dung lượng file log nhiều tới 37GB
+```conf
+# root@web-hcm-07:~# ls -lh /var/log/nginx/ /var/backups/
+/var/log/nginx/:
+-rw-r----- 1 www-data adm  37G Oct 20 01:33 access.log
+-rw-r----- 1 www-data adm 212M Oct 13 23:59 access.log.1
+-rw-r----- 1 www-data adm  19M Oct 13 00:00 access.log.2.gz
+-rw-r----- 1 www-data adm 641M Oct 20 02:23 error.log
+-rw-r----- 1 www-data adm 1.1M Oct 13 23:58 error.log.1
+```
+
+- Dẫn tới hệ quả tiếp theo là backup site fail là tại vì dung lượng đầy và backup được 1 phần của website
+```console
+Oct 20 01:00:01 web-hcm-07 CRON[16887]: (root) CMD (/usr/local/bin/backup-sites.sh >> /var/log/backup-sites.log 2>&1)
+Oct 20 01:00:02 web-hcm-07 backup-sites: start backup /home -> /var/backups/sites-20261020.tar.gz
+Oct 20 01:02:04 web-hcm-07 sshd[16570]: Invalid user ubuntu from 185.5.159.96 port 32248
+Oct 20 01:32:57 web-hcm-07 backup-sites: tar: /var/backups/sites-20261020.tar.gz: Wrote only 4096 of 10240 bytes
+Oct 20 01:32:57 web-hcm-07 backup-sites: tar: Error is not recoverable: exiting now
+Oct 20 01:32:58 web-hcm-07 backup-sites: ERROR backup failed exit=2, keep old backups
+```
+
+- Sau đó những dịch vụ liên quan
+- Nginx không buffer được request body và không ghi được access log
+```console
+2026/10/20 01:32:59 [crit] 2104#0: *5532190 pwrite() "/var/lib/nginx/body 0000183421" failed (28: No space left on device), client: 113.161.40.12, server: shop.anhduongfood.vn, request: "POST /wp-admin/admin-ajax.php HTTP/1.1"
+```
+```console
+2026/10/20 01:33:01 [alert] 2112#0: 2104#0: *5532201 write() to "/var/log/nginx/access.log" failed (28: No space left on device) while logging request
+```
+
+- PHP không ghi được session
+```console
+[20-Oct-2026 01:33:06] WARNING: [pool www] child 90311 said into stderr: "PHP Warning:  session_start(): open(/var/lib/php/sessions/sess_9f2c1d, O_RDWR) failed: No space left on device (28) in /home/site42/public_html/wp-includes/class-wp-session.php on line 112"
+```
+
+- MySQL không ghi được binlog
+```console
+2026-10-20T01:33:04.118842+07:00 14 [ERROR] [MY-000035] [Server] Disk is full writing './binlog.000187' (OS errno 28 - No space left on device). Waiting for someone to free space... Retry in 60 secs.
+```
+
+- Dẫn đến lỗi 502 và 504 từ Nginx và LoadBalancer
+```console
+2026/10/20 01:33:16 [error] 2105#0: *5209440 connect() to unix:/run/php/php8.1-fpm.sock failed (11: Resource temporarily unavailable) while connecting to upstream, client: 14.218.58.164, server: site42.vn, request: "GET /tin-tuc/ HTTP/1.1"
+```
+
+# Các giả thuyết đã loại trừ
