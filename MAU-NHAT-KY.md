@@ -24,9 +24,10 @@
 
 ## Dùng AI và công cụ
 
-| Bước | Công cụ | Dùng để làm gì | Bạn đã kiểm tra, sửa lại gì |
-|---|---|---|---|
-| | | | |
+| Bước | Công cụ      | Dùng để làm gì           | Bạn đã kiểm tra, sửa lại gì                       |
+| ---- | ------------ | ------------------------ | ------------------------------------------------- |
+| 1    | ripgrep (rg) | Lọc và tìm string cụ thể | Lọc những String tồn tại riêng ở "502" và "504"   |
+| 2    |              | Ghi log vào 1 file khác  | Từ ripgrep output, ghi vào file 502-504-error.log |
 
 ## Phần chưa xong hoặc chưa hài lòng
 
