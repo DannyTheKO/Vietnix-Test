@@ -181,3 +181,11 @@ systemctl reload php8.1-fpm
 ss -xl | grep php                                 # còn 511/511 thì:
 systemctl restart php8.1-fpm
 ```
+# Phương án phòng ngừa
+- Sau khi config logrotate deamon config, hay dùng option dry-run để kiểm tra lỗi
+	- không còn error: /etc/logrotate.d/nginx:3 unknown option 'dailly' -- ignoring line
+	- không còn error: found error in /var/log/nginx/*.log , skipping
+```console
+logrotate -d /etc/logrotate.d/nginx
+```
+

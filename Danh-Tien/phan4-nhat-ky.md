@@ -15,8 +15,8 @@
 | 15:00     | 16:40      | Phần 1: Timeline Sự Cố                           |                                                                     |
 | 16:40     | 17:25      | Phần 1: Phân tích nguyên nhân gốc & chuỗi hệ quả |                                                                     |
 | 17:25     | 17:43      | Phần 1: Các giả thuyết đã loại trừ               |                                                                     |
-| 17:43     | 18:18      | Phần 1: Khắc phục tức thời                       |                                                                     |
-| 18:18     |            | Phần 1: Rà lại thủ tục khắc phục                 | Bỏ `kill -USR1`, không truncate `error.log`, thêm bước sửa `dailly` |
+| 17:43     | 18:48      | Phần 1: Khắc phục tức thời                       | Bỏ `kill -USR1`, không truncate `error.log`, thêm bước sửa `dailly` |
+| 18:48     |            | Phần 1:                                          |                                                                     |
 
 ## Giả định đã đặt ra
 
