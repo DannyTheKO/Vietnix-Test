@@ -19,7 +19,7 @@
 | 18:48     | 18:55      | Phần 1: Phương án Phòng ngừa                     |                                             |
 | 18:55     | 19:00      | Phần 1: Summary                                  | Dùng AI để tóm tắt phần 1                   |
 | 19:00     | 19:15      | Phần 2: Tìm hiểu Proxmox VE & đọc file JSON      | Chưa rõ Proxmox là gì, hỏi AI và đọc lại đề |
-| 19:15     | 20:45      | Phần 2:                                          |                                             |
+| 19:15     | 20:45      | Phần 2: Thống kê và hiển thị mức tải             |                                             |
 
 ## Giả định đã đặt ra
 
