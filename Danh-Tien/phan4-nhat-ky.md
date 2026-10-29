@@ -10,14 +10,16 @@
 
 ## Các phiên làm việc
 
-| Thời điểm | Thời lượng | Làm phần nào                                     | Ghi chú (kẹt ở đâu, đã thử gì)   |
-| --------- | ---------- | ------------------------------------------------ | -------------------------------- |
-| 15:00     | 16:40      | Phần 1: Timeline Sự Cố                           |                                  |
-| 16:40     | 17:25      | Phần 1: Phân tích nguyên nhân gốc & chuỗi hệ quả |                                  |
-| 17:25     | 17:43      | Phần 1: Các giả thuyết đã loại trừ               |                                  |
-| 17:43     | 18:48      | Phần 1: Khắc phục tức thời                       | Dùng AI để nêu ra bước khắc phục |
-| 18:48     | 18:55      | Phần 1: Phương án Phòng ngừa                     |                                  |
-| 18:55     | 19:00      | Phần 1: Timeline Sự Cố                           | Dùng AI để tóm tắt phần 1        |
+| Thời điểm | Thời lượng | Làm phần nào                                     | Ghi chú (kẹt ở đâu, đã thử gì)              |
+| --------- | ---------- | ------------------------------------------------ | ------------------------------------------- |
+| 15:00     | 16:40      | Phần 1: Timeline Sự Cố                           |                                             |
+| 16:40     | 17:25      | Phần 1: Phân tích nguyên nhân gốc & chuỗi hệ quả |                                             |
+| 17:25     | 17:43      | Phần 1: Các giả thuyết đã loại trừ               |                                             |
+| 17:43     | 18:48      | Phần 1: Khắc phục tức thời                       | Dùng AI để nêu ra bước khắc phục            |
+| 18:48     | 18:55      | Phần 1: Phương án Phòng ngừa                     |                                             |
+| 18:55     | 19:00      | Phần 1: Summary                                  | Dùng AI để tóm tắt phần 1                   |
+| 19:00     | 19:15      | Phần 2: Tìm hiểu Proxmox VE & đọc file JSON      | Chưa rõ Proxmox là gì, hỏi AI và đọc lại đề |
+| 19:15     | 20:45      | Phần 2:                                          |                                             |
 
 ## Giả định đã đặt ra
 
@@ -72,6 +74,13 @@
 
 ### Phần 2
 #### Công Cụ Sử Dụng
+
+#### Dùng AI
+
+| Bước | Công cụ  | Dùng để làm gì                                                              | Bạn đã kiểm tra, sửa lại gì                                                                                       |
+| ---- | -------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| 1    | DeepSeek | Hỏi Proxmox VE là gì, kiến trúc cluster/node/VM và live-migrate             | Đối chiếu với đề bài phần 2 (cluster `pve-hcm-c3`, node, VM) để chắc chỉ cần đọc JSON, không phải dựng lab thật   |
+| 2    | DeepSeek | Hỏi cách tính tải node và cách dùng dữ liệu trong `cluster-pve-hcm-c3.json` | Tự tính lại thủ công cho node `hcm-c3-n01`, kiểm tra khớp công thức; rà các bản ghi bất thường (xem mục Giả định) |
 
 ## Phần chưa xong hoặc chưa hài lòng
 
