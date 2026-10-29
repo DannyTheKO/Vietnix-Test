@@ -19,4 +19,12 @@
 - Dẫn đến thông tin loại "Alert" về lỗi không ghi được log cho dịch vụ Nginx vào `2026/10/20 01:33:01`
 - Từ thời gian `2026/10/20 01:33:16` trở đi client bị timeout bởi và `php8.1-fpm.sock` chạy thất bại vì không có tài nguyên máy
 
-
+## syslog
+- Người dùng `hieunv` đăng nhập vào máy chủ `web-hcm-07`, sửa config bên dịch vụ nginx `/etc/logrotate.d/nginx` và khởi động lại dịch vụ
+- Vào ngày `14/10/2026` cron chạy task vào lúc `00:00:01` với lệnh `test -x /usr/sbin/logrotate && /usr/sbin/logrotate /etc/logrotate.conf`, thì xuất ra 2 lỗi của phần mềm chạy deamon `logrotate`
+```console
+Oct 14 00:00:02 web-hcm-07 logrotate[5199]: error: /etc/logrotate.d/nginx:3 unknown option 'dailly' -- ignoring line
+Oct 14 00:00:02 web-hcm-07 logrotate[5199]: error: found error in /var/log/nginx/*.log , skipping
+```
+- Nginx không thấy được option của `dailly`, phần này là do phía người dùng typo, nên phải ghi là `daily`
+- Lỗi này lặp lại 7 lần tới `20/10/2026`
