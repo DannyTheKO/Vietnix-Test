@@ -6,5 +6,10 @@
 - Dùng "ripgrep" để tìm string lỗi và ghi vào log 
     - `rg -w "502|504" phan1-su-co\lb\access-lb-hcm-01.log > phan1-su-co\lb\502-504-error.log`
 - Sau khi dùng dụng cụ "ripgrep"
-    - thời gian xảy ra lỗi là từ `20/Oct/2026:01:33:05 +0700`
-    - lỗi kết thúc vào `20/Oct/2026:02:25:01 +0700`
+    - thời gian xảy ra lỗi là từ `20/Oct/2026:01:33:05 +0700` (20/10/2026 01:33:05)
+    - lỗi kết thúc vào `20/Oct/2026:02:25:01 +0700` (20/10/2026 02:25:01)
+
+## MySQL
+- Khi vào mysql/error.log thì thấy lỗi output "đầy dung lượng" và chờ sau 1 phút để user tự giải phóng dung lượng
+    - thời gian bắt đầu từ `2026-10-20T01:33:04` (20/10/2026 1:33:04)
+    - thời gian kết thúc từ `2026-10-20T02:23:04` (20/10/2026 2:23:04)
