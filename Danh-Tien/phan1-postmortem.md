@@ -38,7 +38,7 @@ Oct 14 00:00:02 web-hcm-07 logrotate[5199]: error: found error in /var/log/nginx
 ```conf
 # root@web-hcm-07:~# cat /etc/logrotate.d/nginx
 /var/log/nginx/*.log {
-	dailly # << sửa lại thành "daily"
+	dailly # << sai option
 	missingok
 	rotate 14
 	compress
@@ -135,4 +135,49 @@ MiB Swap:   2048.0 total,   2035.4 free,     12.6 used.  22053.0 avail Mem
   90312 www-data  20   0  412880  86500  60812 S   0.0   0.3   0:03.92 php-fpm8.1
 ``` 
 
+# Khắc phục tức thời
+- Sửa conf daemon của logrotate
+```conf
+# root@web-hcm-07:~# cat /etc/logrotate.d/nginx
+/var/log/nginx/*.log {
+	daily # << sửa lại thành "daily"
+	missingok
+	rotate 14
+	compress
+	delaycompress
+	notifempty
+	create 0640 www-data adm
+	sharedscripts
+	postrotate
+		invoke-rc.d nginx rotate >/dev/null 2>&1
+	endscript
+}
+```
 
+- Giữ mẫu 1G log rồi giải phóng 37 GB
+```bash
+# mẫu 1 GB cuối
+tail -c 1G /var/log/nginx/access.log | gzip -1 > /dev/shm/access-tail.gz
+
+# truncate tại chỗ, giữ inode
+truncate -s 0 /var/log/nginx/access.log
+df -h /
+
+# rồi tới nginx/error.log
+install -d -m 700 /root/incident-20261020
+mv /dev/shm/access-tail.gz /root/incident-20261020/
+cp -a /var/log/nginx/error.log /root/incident-20261020/
+```
+
+- Để MySQL tự hồi
+```bash
+mysqladmin ping
+mysqladmin processlist | grep -c "Waiting for"   # 49 -> 0
+```
+
+- Xả worker PHP-FPM
+```bash
+systemctl reload php8.1-fpm
+ss -xl | grep php                                 # còn 511/511 thì:
+systemctl restart php8.1-fpm
+```
