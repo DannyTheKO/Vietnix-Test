@@ -4,22 +4,31 @@
 
 **Nhận đề lúc:** 14:50
 
-**Nộp bài lúc:** ...
+**Nộp bài lúc:** ... Hiện tại 5:45
 
 **Tổng thời gian làm thật (ước tính):** ...
 
 ## Các phiên làm việc
 
+### Ngày 29/10/2026
+
 | Thời điểm | Thời lượng | Làm phần nào                                     | Ghi chú (kẹt ở đâu, đã thử gì)              |
 | --------- | ---------- | ------------------------------------------------ | ------------------------------------------- |
-| 15:00     | 16:40      | Phần 1: Timeline Sự Cố                           |                                             |
-| 16:40     | 17:25      | Phần 1: Phân tích nguyên nhân gốc & chuỗi hệ quả |                                             |
-| 17:25     | 17:43      | Phần 1: Các giả thuyết đã loại trừ               |                                             |
-| 17:43     | 18:48      | Phần 1: Khắc phục tức thời                       | Dùng AI để nêu ra bước khắc phục            |
-| 18:48     | 18:55      | Phần 1: Phương án Phòng ngừa                     |                                             |
-| 18:55     | 19:00      | Phần 1: Summary                                  | Dùng AI để tóm tắt phần 1                   |
-| 19:00     | 19:15      | Phần 2: Tìm hiểu Proxmox VE & đọc file JSON      | Chưa rõ Proxmox là gì, hỏi AI và đọc lại đề |
-| 19:15     | 20:45      | Phần 2: Thống kê và hiển thị mức tải             |                                             |
+| 15:00     | 1h40p      | Phần 1: Timeline Sự Cố                           |                                             |
+| 16:40     | 0h45p      | Phần 1: Phân tích nguyên nhân gốc & chuỗi hệ quả |                                             |
+| 17:25     | 0h18p      | Phần 1: Các giả thuyết đã loại trừ               |                                             |
+| 17:43     | 1h05p      | Phần 1: Khắc phục tức thời                       | Dùng AI để nêu ra bước khắc phục            |
+| 18:48     | 0h07p      | Phần 1: Phương án Phòng ngừa                     |                                             |
+| 18:55     | 0h05p      | Phần 1: Summary                                  | Dùng AI để tóm tắt phần 1                   |
+| 19:00     | 0h15p      | Phần 2: Tìm hiểu Proxmox VE & đọc file JSON      | Chưa rõ Proxmox là gì, hỏi AI và đọc lại đề |
+| 19:15     | 1h30p      | Phần 2: Thống kê và hiển thị mức tải             |                                             |
+
+### Ngày 30/10/2026
+
+| Thời điểm | Thời lượng | Làm phần nào          | Ghi chú (kẹt ở đâu, đã thử gì) |
+| --------- | ---------- | --------------------- | ------------------------------ |
+| 9:07      |            | Phần 2: Unit Test cho |                                |
+
 
 ## Giả định đã đặt ra
 
