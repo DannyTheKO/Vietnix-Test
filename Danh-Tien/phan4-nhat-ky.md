@@ -27,7 +27,7 @@
 
 | Thời điểm | Thời lượng | Làm phần nào          | Ghi chú (kẹt ở đâu, đã thử gì) |
 | --------- | ---------- | --------------------- | ------------------------------ |
-| 9:07      |            | Phần 2: Unit Test cho |                                |
+| 9:07      | 1h6p       | Phần 2: Unit Test cho |                                |
 
 
 ## Giả định đã đặt ra
